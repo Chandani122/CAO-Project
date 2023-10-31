@@ -52,9 +52,9 @@ st.text("")
 st.markdown("""<h3 class='bold-2'>ALGORITHMS:</h3>""", unsafe_allow_html=True)
 st.text("")
 
-booth = src/boothmultiplication.png
-res = src/restoringdivision.png
-nonr = src/nonrestoringdivision.png
+booth = "src/boothmultiplication.png"
+res = "src/restoringdivision.png"
+nonr = "src/nonrestoringdivision.png"
 
 img1 = Image.open(booth)
 img2 = Image.open(res)
