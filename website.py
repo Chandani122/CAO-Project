@@ -1,50 +1,80 @@
 import streamlit as st
 import pandas as pd
 from src import Operations as op
+from PIL import Image
 
 header_style = """
     <style>
         .bold-header {
-            font-weight: bold;
             font-size: 2.75em;
+            text-align: center;
         }
         .italic-text {
             font-style: italic;
             font-size: 1.5em;
         }
-        .sidebar-radio label {
-            font-size: 1.5em !important;
-        }
-        italic-new{
+        .italic-new{
             font-style: italic;
-            font-size: 3.0em;
+            font-size: 1.75em;
+            text-align: center;
         }
         .bold-2 {
             font-weight: bold;
             font-size: 2.0em;
         }
-        .bold-1 {
-            font-weight: bold;
-            font-size: 1.0em;
+        .font-1 {
+            font-size: 1.5em;
         }
     </style>
 """
 st.markdown(header_style, unsafe_allow_html=True)  
-st.markdown("<h1 style='text-align: center;'>Smart Irrigation</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center;'>Optimal Water Use for Sustainable Agriculture</h3>", unsafe_allow_html=True)
+st.markdown("<h1 class='bold-header'>SMART IRRIGATION</h1>", unsafe_allow_html=True)
+st.markdown("<h2 class='italic-new'>Optimal water use for sustainable agriculture</h3>", unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center;'>🌱🌊🌟</h1>", unsafe_allow_html=True)
+
 st.text("")
 st.text("")
-st.markdown("""<p class='italic-text'>
-Welcome to our groundbreaking project! 
-Our mission is to revolutionize irrigation practices in agriculture by introducing a cutting-edge approach that harnesses the power of binary operations. 🌾💡</p>""",unsafe_allow_html=True)
+
+st.markdown("""<h3 class='bold-2'>OBJECTIVE:</h3>""", unsafe_allow_html=True)
 st.text("")
-st.markdown("""<p class='italic-text'>Our primary objective is to enhance the efficiency and sustainability of irrigation systems. 🔄 By seamlessly blending binary calculations with a sophisticated mathematical equation tailored for irrigation.🌏💧</p>""",unsafe_allow_html=True) 
-st.text("")
-st.text("")
-st.markdown("""<p class='italic-text'>The irrigation duration for any crop can be found out which helps us to efficiently grow crops in suitable places.</p>""",unsafe_allow_html=True) 
+st.markdown("""<p class='italic-text'>The primary objective of our project is to conduct a comprehensive analysis of water efficient crop irrigation practices in two distinct regions. The irrigation duration for any crop can be found out which helps us to efficiently grow crops in suitable places.</p>""", unsafe_allow_html=True)
+
 st.text("")
 st.text("")
+
+st.markdown("""<h3 class='bold-2'>FORMULA USED:</h3>""", unsafe_allow_html=True)
+st.text("")
+st.markdown("""<p class='italic-text'>[(Crop ET x Crop coefficient) + (Rainfall - Evaporation)] / (Soil water holding capacity / Field Area)</p>""",unsafe_allow_html=True) 
+
+st.text("")
+st.text("")
+
+st.markdown("""<h3 class='bold-2'>ALGORITHMS:</h3>""", unsafe_allow_html=True)
+st.text("")
+
+booth = r"F:\Cao Project\src\boothmultiplication.png"
+res = r"F:\Cao Project\src\restoringdivision.png"
+nonr = r"F:\Cao Project\src\nonrestoringdivision.png"
+
+img1 = Image.open(booth)
+img2 = Image.open(res)
+img3 = Image.open(nonr)
+
+st.markdown("""<p class='italic-text'>Booth Multiplication:</p>""",unsafe_allow_html=True) 
+st.image(img1)
+st.text("")
+st.markdown("""<p class='italic-text'>Restoring Division:</p>""",unsafe_allow_html=True) 
+st.image(img2)
+st.text("")
+st.markdown("""<p class='italic-text'>Non-restoring Division:</p>""",unsafe_allow_html=True) 
+st.image(img3)
+
+st.text("")
+st.text("")
+
+st.markdown("""<h3 class='bold-2'>CALCULATION:</h3>""", unsafe_allow_html=True)
+st.text("")
+
 col1, col2 = st.columns(2)
 
 col1.markdown("""<p class='italic-text'>Data from region A:</p>""",unsafe_allow_html=True) 
@@ -63,8 +93,10 @@ rainfall2 = col2.number_input("Rainfall of Region B: ")
 evaporation2 = col2.number_input("Evaporation of Region B: ")
 swhc2 = col2.number_input("Soil Water Holding Capacity of Region B: ")
 field_area2 = col2.number_input("Field Area of Region B: ")
+
 st.text("")
 st.text("")
+
 col3, col4 = st.columns(2)
 
 if st.button(" Calculate "):
@@ -82,14 +114,18 @@ if st.button(" Calculate "):
         res2 = op.restoringdivision(swhc2, field_area2)
         nonres2 = op.nonrestoringdivision(add2, res2[1])
         result2 = (float(add2) / float(res2[1]))
-        
-    col3.write(f"Irrigation duration of Region A: {result1:.2f}")
-    col4.write(f"Irrigation duration of Region B: {result2:.2f}")
     
-    st.markdown("""<p class='bold-2'>Conclusion:</p>""",unsafe_allow_html=True) 
+    col3.success(f"Irrigation duration of Region A: {result1:.2f}")
+    col4.success(f"Irrigation duration of Region B: {result2:.2f}")
+    
     if (nonres1<nonres2):
-        st.write("Region A is more water efficient than Region B")
+        st.markdown("""<p class='italic-text>Region A is more water efficient than Region B.</p>""", unsafe_allow_html=True)
     elif(nonres1==nonres2):
-        st.write("Region A and B are equally water efficient")
+        st.write("""<p class='italic-text>Region A and B are equally water efficient.</p>""", unsafe_allow_html=True)
     else:
-        st.write("Region B is more water efficient than Region A")
+        st.write("""<p class='italic-text'>Region B is more water efficient than Region A.</p>""", unsafe_allow_html=True)
+
+    st.markdown("""<h3 class='bold-2'>CONCLUSION:</h3>""",unsafe_allow_html=True) 
+    st.text("")
+    st.markdown("""<p class='italic-text'>The project highlights regional disparities in water-efficient crop irrigation. This underscores the importance of optimizing irrigation practices for sustainability and encourages policymakers to promote water-saving techniques in agriculture for a more secure and environmentally responsible future.</p>""", unsafe_allow_html=True)
+    st.text("")
