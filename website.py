@@ -80,19 +80,19 @@ col1, col2 = st.columns(2)
 col1.markdown("""<p class='italic-text'>Data from region A:</p>""",unsafe_allow_html=True) 
 col2.markdown("""<p class='italic-text'>Data from region B:</p>""",unsafe_allow_html=True) 
 
-crop_et1 = col1.number_input("Crop ET of Region A: ")
-kc1 = col1.number_input("Crop Coefficient of Region A: ")
-rainfall1 = col1.number_input("Rainfall of Region A: ")
-evaporation1 = col1.number_input("Evaporation of Region A: ")
-swhc1 = col1.number_input("Soil Water Holding Capacity of Region A: ")
-field_area1 = col1.number_input("Field Area of Region A: ")
+crop_et1 = col1.number_input("Crop ET of Region A: ",value=1)
+kc1 = col1.number_input("Crop Coefficient of Region A: ",value=1)
+rainfall1 = col1.number_input("Rainfall of Region A: ",value=1)
+evaporation1 = col1.number_input("Evaporation of Region A: ",value=1)
+swhc1 = col1.number_input("Soil Water Holding Capacity of Region A: ",value=1)
+field_area1 = col1.number_input("Field Area of Region A: ",value=1,max_value=swhc1)
 
-crop_et2 = col2.number_input("Crop ET of Region B: ")
-kc2 = col2.number_input("Crop Coefficient of Region B: ")
-rainfall2 = col2.number_input("Rainfall of Region B: ")
-evaporation2 = col2.number_input("Evaporation of Region B: ")
-swhc2 = col2.number_input("Soil Water Holding Capacity of Region B: ")
-field_area2 = col2.number_input("Field Area of Region B: ")
+crop_et2 = col2.number_input("Crop ET of Region B: ",value=1)
+kc2 = col2.number_input("Crop Coefficient of Region B: ",value=1)
+rainfall2 = col2.number_input("Rainfall of Region B: ",value=1)
+evaporation2 = col2.number_input("Evaporation of Region B: ",value=1)
+swhc2 = col2.number_input("Soil Water Holding Capacity of Region B: ",value=1)
+field_area2 = col2.number_input("Field Area of Region B: ",max_value=swhc2,value=1)
 
 st.text("")
 st.text("")
@@ -104,8 +104,11 @@ if st.button(" Calculate "):
         prod1 = op.boothmultiplication(crop_et1, kc1)
         sub1 = op.binarysubtraction(rainfall1, evaporation1)
         add1 = op.binaryaddition(prod1, sub1)
-        res1 = op.restoringdivision(swhc1, field_area1)
-        nonres1 = op.nonrestoringdivision(add1, res1[1])
+        try:
+            res1 = op.restoringdivision(swhc1, field_area1)
+            nonres1 = op.nonrestoringdivision(add1, res1[1])
+        except ZeroDivisionError:
+            st.write("Soil water holding capacity should be greater than field")
         result1 = (float(add1) / float(res1[1]))
     with col4:
         prod2 = op.boothmultiplication(crop_et2, kc2)
@@ -119,11 +122,13 @@ if st.button(" Calculate "):
     col4.success(f"Irrigation duration of Region B: {result2:.2f}")
     
     if (nonres1<nonres2):
-        st.markdown("""<p class='italic-text>Region A is more water efficient than Region B.</p>""", unsafe_allow_html=True)
+        st.markdown("""<p class='italic-text'>Region A is more water efficient than Region B.</p>""", unsafe_allow_html=True)
     elif(nonres1==nonres2):
-        st.write("""<p class='italic-text>Region A and B are equally water efficient.</p>""", unsafe_allow_html=True)
+        st.write("""<p class='italic-text'>Region A and B are equally water efficient.</p>""", unsafe_allow_html=True)
     else:
         st.write("""<p class='italic-text'>Region B is more water efficient than Region A.</p>""", unsafe_allow_html=True)
+    st.text("")
+    st.text("")    
 
     st.markdown("""<h3 class='bold-2'>CONCLUSION:</h3>""",unsafe_allow_html=True) 
     st.text("")
